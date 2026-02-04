@@ -7,17 +7,15 @@ def key_key_generationeration(seed: str) -> list[int]:
     1. Baseada na seed.
     2. Tamanho deve ser 4 vezes o comprimento da seed.
     """
-    # Converte a string para bytes e gera um hash SHA-256
+
     hash_obj = hashlib.sha256(seed.encode()).digest()
     key_len = 4 * len(seed)
 
     bits = []
     for byte in hash_obj:
         for i in range(7, -1, -1):
-            # Extrai cada bit individualmente (0 ou 1)
             bits.append((byte >> i) & 1)
 
-    # Ajusta o tamanho da lista para ser exatamente 4 * len(seed)
     return bits[:key_len] if len(bits) >= key_len else (bits * (key_len // len(bits) + 1))[:key_len]
 
 
@@ -66,7 +64,7 @@ def teste_confusao(seed_original, mensagem):
 
 
 if __name__ == "__main__":
-    seed_exemplo = "fatec"
+    seed_exemplo = "fadec"
     msg_exemplo = [1, 0, 1, 0, 1] * 4
 
     chave = key_key_generationeration(seed_exemplo)
