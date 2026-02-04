@@ -1,6 +1,6 @@
 import hashlib
 
-def key_key_generationeration(seed: str) -> list[int]:
+def GEN(seed: str) -> list[int]:
     """
     Função responsável por criar uma chave binária baseada em uma semente.
     Regras:
@@ -19,7 +19,7 @@ def key_key_generationeration(seed: str) -> list[int]:
     return bits[:key_len] if len(bits) >= key_len else (bits * (key_len // len(bits) + 1))[:key_len]
 
 
-def cryptographic(K: list[int], M: list[int]) -> list[int]:
+def ENC(K: list[int], M: list[int]) -> list[int]:
     """
     Realiza a criptografia da mensagem M usando a chave K através de XOR.
     """
@@ -29,7 +29,7 @@ def cryptographic(K: list[int], M: list[int]) -> list[int]:
     return [k ^ m for k, m in zip(K, M)]
 
 
-def descryptografic(K: list[int], C: list[int]) -> list[int]:
+def DEC(K: list[int], C: list[int]) -> list[int]:
     """
     Realiza a descriptografia retornando a mensagem original m.
     """
@@ -40,12 +40,12 @@ def descryptografic(K: list[int], C: list[int]) -> list[int]:
 def teste_difusao(seed, mensagem_original):
     """Mede quantos bits mudam na cifra ao alterar 1 bit da mensagem."""
     K = key_key_generationeration(seed)
-    C1 = cryptographic(K, mensagem_original)
+    C1 = ENC(K, mensagem_original)
 
     mensagem_modificada = mensagem_original.copy()
     mensagem_modificada[0] ^= 1
 
-    C2 = cryptographic(K, mensagem_modificada)
+    C2 = ENC(K, mensagem_modificada)
     bits_alterados = sum(b1 ^ b2 for b1, b2 in zip(C1, C2))
     return bits_alterados
 
@@ -53,11 +53,11 @@ def teste_difusao(seed, mensagem_original):
 def teste_confusao(seed_original, mensagem):
     """Mede quantos bits mudam na cifra ao alterar 1 bit da seed."""
     K1 = key_key_generationeration(seed_original)
-    C1 = cryptographic(K1, mensagem)
+    C1 = ENC(K1, mensagem)
 
     seed_modificada = seed_original[:-1] + (chr(ord(seed_original[-1]) + 1))
     K2 = key_key_generationeration(seed_modificada)
-    C2 = cryptographic(K2, mensagem)
+    C2 = ENC(K2, mensagem)
 
     bits_alterados = sum(b1 ^ b2 for b1, b2 in zip(C1, C2))
     return bits_alterados
@@ -67,9 +67,9 @@ if __name__ == "__main__":
     seed_exemplo = "fadec"
     msg_exemplo = [1, 0, 1, 0, 1] * 4
 
-    chave = key_key_generationeration(seed_exemplo)
-    cifra = cryptographic(chave, msg_exemplo)
-    original = descryptografic(chave, cifra)
+    chave = GEN(seed_exemplo)
+    cifra = ENC(chave, msg_exemplo)
+    original = DEC(chave, cifra)
 
     print(f"Mensagem Original: {msg_exemplo}")
     print(f"Cifra Gerada:      {cifra}")
