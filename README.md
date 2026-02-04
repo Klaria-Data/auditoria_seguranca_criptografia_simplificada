@@ -1,0 +1,1 @@
+# auditoria_seguranca_criptografia_simplificada
