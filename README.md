@@ -1,6 +1,6 @@
 # Esquema Criptográfico Simplificado em Python
 
-Este projeto consiste na implementação de um **esquema criptográfico simplificado**, desenvolvido como parte da disciplina de **Segurança / Criptografia**.  
+Este projeto consiste na implementação de um **esquema criptográfico simplificado**, desenvolvido como parte da disciplina de **Auditoria e Segurança da Informação**.  
 O objetivo é aplicar conceitos fundamentais de **geração de chaves**, **cifragem** e **avaliação de qualidade de cifras** (Difusão e Confusão), utilizando a linguagem **Python 3.10**.
 
 ---
