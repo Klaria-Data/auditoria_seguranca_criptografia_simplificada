@@ -1,3 +1,4 @@
+import time
 import hashlib
 
 def GEN(seed: list[int]) -> list[int]:
@@ -84,9 +85,35 @@ if __name__ == "__main__":
     cifra = ENC(chave, msg_exemplo)
     original = DEC(chave, cifra)
 
-    print(f"Seed Utilizada:    {seed_exemplo}")
-    print(f"Mensagem Original: {msg_exemplo}")
-    print(f"Cifra Gerada:      {cifra}")
-    print(f"Descriptografado:  {original}")
-    print(f"Teste Difusão: {teste_difusao(seed_exemplo, msg_exemplo)} bits alterados")
-    print(f"Teste Confusão: {teste_confusao(seed_exemplo, msg_exemplo)} bits alterados")
+    start_time = time.perf_counter()
+    chave = GEN(seed_exemplo)
+    cifra = ENC(chave, msg_exemplo)
+    end_time = time.perf_counter()
+    print(f"[TEMPO] Execução ENC: {end_time - start_time:.8f}s")
+
+    msg_modificada = msg_exemplo.copy()
+    msg_modificada[0] ^= 1
+    cifra_modificada = ENC(chave, msg_modificada)
+
+    bits_dif = sum(b1 ^ b2 for b1, b2 in zip(cifra, cifra_modificada))
+
+    print("\n[TESTE DE DIFUSÃO]")
+    print(f"M original: {msg_exemplo}")
+    print(f"M alterada: {msg_modificada}")
+    print(f"C original: {cifra}")
+    print(f"C alterada: {cifra_modificada}")
+    print(f"Resultado: {bits_dif} bit(s) alterado(s) na cifra.")
+
+    seed_modificada = seed_exemplo.copy()
+    seed_modificada[0] ^= 1
+    chave_modificada = GEN(seed_modificada)
+    cifra_confusao = ENC(chave_modificada, msg_exemplo)
+
+    bits_conf = sum(b1 ^ b2 for b1, b2 in zip(cifra, cifra_confusao))
+
+    print("\n[TESTE DE CONFUSÃO]")
+    print(f"Seed original:   {seed_exemplo}")
+    print(f"Seed modificada: {seed_modificada}")
+    print(f"Cifra original:  {cifra}")
+    print(f"Cifra alterada:  {cifra_confusao}")
+    print(f"Resultado: {bits_conf} bit(s) alterados na cifra.")
